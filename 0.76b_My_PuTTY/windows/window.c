@@ -7813,7 +7813,8 @@ void set_title_internal(TermWin *tw, const char *title) {
 static void wintw_set_title(TermWin *tw, const char *title_in) {
 	char *buffer=NULL, *fmt=NULL, *title=NULL ;
 
-	if( title_in==NULL ) { return ; }
+	// Prevent the title being lost/reset when the window state is changed.
+	if (title_in == NULL || strlen(title_in) == 0) return;
 	
 	title = (char*)malloc( strlen(title_in)+1 ) ; strcpy( title, title_in ) ;
 	
@@ -7885,6 +7886,9 @@ static void wintw_set_title(TermWin *tw, const char *title_in) {
 
 static void wintw_set_icon_title(TermWin *tw, const char *title_in)
 {
+	// Prevent the title being lost/reset when the window state is changed..
+	if (title_in == NULL || strlen(title_in) == 0) return;
+
 	char * title = make_title( "%s", title_in ) ;
 
     sfree(icon_name);
