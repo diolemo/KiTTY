@@ -1,0 +1,7 @@
+docker run --rm -it \
+    -v $(pwd)/:/sources \
+    -v $(pwd)/builds:/builds \
+    -e USR_UID=$(id -u) \
+    -e USR_GID=$(id -g) \
+    cyd01/cross-gcc \
+    "cd 0.76b_My_PuTTY/windows && make -f MAKEFILE.MINGW diolemo && cd /builds && ls -l" 

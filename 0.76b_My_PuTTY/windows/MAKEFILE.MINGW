@@ -169,10 +169,10 @@ CFLAGS += 	 \
 		-I../macosx \
 		-I../../base64 \
 		-I../../bcrypt \
-		-I../../md5 -I../../regex -I../../url -I../../rutty		
+		-I../../md5 -I../../regex -I../../url -I../../rutty
 
 
-#		-DMOD_TUTTYCOLOR 
+#		-DMOD_TUTTYCOLOR
 
 # Autre flag a gérer
 # Ajouter  -DMOD_NOPASSWORD \ pour compiler une version sans possibilité de sauvegarder le mot de passe
@@ -403,7 +403,7 @@ psocks.exe: be_misc.o callback.o conf.o console.o errsock.o logging.o \
 		kitty_commun.o kitty_tools.o \
 		local-proxy.o select-cli.o winsocks.o -ladvapi32 -lcomdlg32 \
 		-lgdi32 -limm32 -lole32 -lshell32 -luser32 \
-		../../mini/mini.a 
+		../../mini/mini.a
 
 putty.exe: agentf.o aqsync.o be_all_s.o be_misc.o callback.o cmdline.o \
 		conf.o config.o cproxy.o dialog.o ecc-arithmetic.o errsock.o ldisc.o \
@@ -472,8 +472,8 @@ putty.exe: agentf.o aqsync.o be_all_s.o be_misc.o callback.o cmdline.o \
 		-luser32 -lwsock32  -lwtsapi32 \
 		#-lcrypt32 \
 		#/c/Windows/system32/crypt32.dll /c/windows/system32/ncrypt.dll \
-		# -lcomctl32 -lwinmm -lwinspool -lole32 
-		
+		# -lcomctl32 -lwinmm -lwinspool -lole32
+
 puttygen.exe: conf.o ecc-arithmetic.o import.o marshal.o memory.o millerrabin.o misc.o \
 		mpint.o mpunsafe.o notiming.o pockle.o primecandidate.o \
 		puttygen.res.o smallprimes.o aes.o argon2.o \
@@ -636,7 +636,7 @@ console.o: ../console.c ../putty.h ../misc.h ../console.h ../defs.h \
 		../puttymem.h ../windows/platform.h ../unix/unix.h \
 		../tree234.h ../windows/help.h ../charset/charset.h
 	$(CC) $(COMPAT) $(CFLAGS) $(XFLAGS) -c ../console.c
-	
+
 cproxy.o: ../proxy/cproxy.c ../putty.h ../ssh.h ../network.h ../proxy/proxy.h \
 		../marshal.h ../defs.h ../puttyps.h ../misc.h \
 		../ssh/signal-list.h ../puttymem.h ../tree234.h ../ssh/ttymode-list.h \
@@ -785,7 +785,7 @@ millerrabin.o: ../keygen/millerrabin.c ../ssh.h ../sshkeygen.h ../mpint.h \
 		../keygen/mpunsafe.h ../puttymem.h ../tree234.h ../network.h \
 		../misc.h ../ssh/ttymode-list.h ../defs.h ../marshal.h
 	$(CC) $(COMPAT) $(CFLAGS) $(XFLAGS) -c ../keygen/millerrabin.c
-	
+
 mimeenc.o: ../charset/mimeenc.c ../charset/charset.h ../charset/internal.h
 	$(CC) $(COMPAT) $(CFLAGS) $(XFLAGS) -c ../charset/mimeenc.c
 
@@ -2048,7 +2048,7 @@ ldisc_plink.o: ../ldisc.c ../putty.h ../terminal/terminal.h ../defs.h ../puttyps
 		../unix/unix.h ../puttymem.h \
 		../windows/help.h ../charset/charset.h
 	$(CC) $(COMPAT) $(CFLAGS_PLINK) $(XFLAGS) -o ldisc_plink.o -c ../ldisc.c
-	
+
 pageant_integrated.o: ../pageant.c ../putty.h ../mpint.h ../ssh.h ../sshcr.h \
 		../pageant.h ../defs.h ../puttyps.h ../network.h ../misc.h \
 		../marshal.h ../ssh/signal-list.h ../puttymem.h ../tree234.h \
@@ -2119,7 +2119,7 @@ kitty_crypt.o: ../../kitty_crypt.c ../../kitty_crypt.h
 	$(CC) $(COMPAT) $(XFLAGS) $(CFLAGS) -DMASTER_PASSWORD=`cat ../../masterpassword.txt` -c ../../kitty_crypt.c
 
 kitty_image.o: ../../kitty_image.c
-	$(CC) $(COMPAT) $(XFLAGS) $(CFLAGS) -c ../../kitty_image.c 
+	$(CC) $(COMPAT) $(XFLAGS) $(CFLAGS) -c ../../kitty_image.c
 
 kitty_iv.o: ../../kitty_iv.c ../../kitty_iv.h
 	$(CC) $(COMPAT) $(XFLAGS) $(CFLAGS) -c ../../kitty_iv.c
@@ -2378,6 +2378,14 @@ putty_portable.exe: agentf.o aqsync.o be_all_s.o be_misc.o callback.o cmdline.o 
 clean:
 	rm -f *.o *.exe *.res.o *.so *.map
 
+diolemo:
+	sed -i 's#^typedef enum _WTS_VIRTUAL_CLASS #// typedef enum _WTS_VIRTUAL_CLASS #' window.c
+	sed -i 's/0/999/' version_major.txt
+	make -e TOOLPATH=/usr/bin/i686-w64-mingw32- -f MAKEFILE.MINGW portable
+	# upx --best --compress-icons=2 --compress-exports=0 putty_portable.exe
+	mv putty_portable.exe /builds/ssh2.exe
+	# rm *.o
+
 cross:
 	sed -i 's#^typedef enum _WTS_VIRTUAL_CLASS #// typedef enum _WTS_VIRTUAL_CLASS #' window.c
 	sed -i 's/0/999/' version_major.txt
@@ -2386,7 +2394,7 @@ cross:
 	cp putty.exe putty_nocompress.exe
 	upx --best --compress-icons=2 --compress-exports=0 putty.exe putty_portable.exe
 	mv putty.exe /builds/kitty.exe
-	mv putty_portable.exe /builds/kitty_portable.exe
+	mv putty_portable.exe /builds/ssh2.exe
 	mv putty_nocompress.exe /builds/kitty_nocompress.exe
 	mv plink.exe /builds/klink.exe
 	mv pscp.exe /builds/kscp.exe
